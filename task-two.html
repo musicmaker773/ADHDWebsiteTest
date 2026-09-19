@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment Breakdown | ADHD Student Helper</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>window.location.replace(`index.html${window.location.search}#breakdown`);</script>
+</head>
+<body data-page="task-two">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="ADHD Student Helper home">
+      <span class="brand-mark">A</span>
+      <span>ADHD Student Helper</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="task-one.html">Smart Focus Timer</a>
+      <a href="task-two.html">Assignment Breakdown</a>
+      <a href="task-three.html">App Duration Tracker</a>
+      <a class="assignments-widget-trigger" href="#assignments-widget">Assignments</a>
+      <a class="spotify-widget-trigger" href="#spotify-widget">Study Playlist</a>
+    </nav>
+  </header>
+
+  <main class="breakdown-shell">
+    <section class="breakdown-intro">
+      <p class="eyebrow">Planning tool</p>
+      <h1>Assignment Breakdown</h1>
+      <p>
+        Turn one overwhelming assignment into a short checklist of clear, doable steps.
+      </p>
+    </section>
+
+    <section class="breakdown-layout" aria-label="Assignment Breakdown tool">
+      <article class="breakdown-panel">
+        <label class="field-label" for="assignment-input">What assignment feels too big?</label>
+        <textarea id="assignment-input" class="assignment-input" rows="4" maxlength="4000">Write a 5-page history paper.</textarea>
+
+        <div class="breakdown-actions">
+          <button class="button primary" id="breakdown-button" type="button">Break It Down</button>
+          <button class="button secondary" id="example-assignment" type="button">Use Example</button>
+          <button class="button secondary" id="clear-steps" type="button">Reset</button>
+        </div>
+
+        <p id="breakdown-request-status" role="status" aria-live="polite"></p>
+
+        <div class="next-step-panel" aria-live="polite">
+          <p class="eyebrow">Next tiny step</p>
+          <h2 id="next-step">Enter an assignment and break it down.</h2>
+        </div>
+      </article>
+
+      <article class="checklist-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Checklist</p>
+            <h2 id="assignment-title">Your smaller steps</h2>
+          </div>
+          <span class="points-pill"><span id="breakdown-count">0</span>%</span>
+        </div>
+
+        <div class="progress-track" aria-label="Assignment progress">
+          <span id="breakdown-progress"></span>
+        </div>
+
+        <p class="checklist-status" id="breakdown-status">No steps yet.</p>
+        <ul class="step-list" id="step-list"></ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-note">ADHD Student Helper</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

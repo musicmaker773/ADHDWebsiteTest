@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Focus Timer | ADHD Student Helper</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>window.location.replace(`index.html${window.location.search}#focus`);</script>
+</head>
+<body data-page="task-one">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="ADHD Student Helper home">
+      <span class="brand-mark">A</span>
+      <span>ADHD Student Helper</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="task-one.html">Smart Focus Timer</a>
+      <a href="task-two.html">Assignment Breakdown</a>
+      <a href="task-three.html">App Duration Tracker</a>
+      <a class="assignments-widget-trigger" href="#assignments-widget">Assignments</a>
+      <a class="spotify-widget-trigger" href="#spotify-widget">Study Playlist</a>
+    </nav>
+  </header>
+
+  <main class="focus-shell">
+    <section class="focus-intro">
+      <p class="eyebrow">Focus tool</p>
+      <h1>Smart Focus Timer</h1>
+      <p>
+        Choose a study length, name the task, build four focused sessions, and earn rewards as you go.
+      </p>
+    </section>
+
+    <section class="focus-layout" aria-label="Smart Focus Timer">
+      <article class="timer-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Current round</p>
+            <h2 id="mode-title">Focus Session</h2>
+          </div>
+          <span class="points-pill"><span id="points-count">0</span> pts</span>
+        </div>
+
+        <label class="field-label" for="task-name">What are you working on?</label>
+        <input id="task-name" class="task-input" type="text" value="Study for class" maxlength="48">
+
+        <div class="duration-group" aria-label="Choose focus length">
+          <button class="duration-button active" type="button" data-minutes="10">10 min</button>
+          <button class="duration-button" type="button" data-minutes="15">15 min</button>
+          <button class="duration-button" type="button" data-minutes="20">20 min</button>
+          <button class="duration-button" type="button" data-minutes="25">25 min</button>
+        </div>
+
+        <div class="timer-display" aria-live="polite">
+          <span id="time-left">10:00</span>
+          <small id="timer-context">Ready to focus on Study for class.</small>
+        </div>
+
+        <div class="progress-track" aria-label="Current session progress">
+          <span id="session-progress"></span>
+        </div>
+
+        <div class="timer-actions">
+          <button class="button primary" id="start-pause" type="button">Start</button>
+          <button class="button secondary" id="reset-timer" type="button">Reset</button>
+          <button class="button secondary" id="finish-session" type="button">Complete Session</button>
+        </div>
+      </article>
+
+      <aside class="support-panel">
+        <div class="session-card">
+          <p class="eyebrow">Goal</p>
+          <h2>Complete 4 sessions</h2>
+          <div class="session-meter" aria-label="Completed focus sessions">
+            <span class="session-dot" data-session="1"></span>
+            <span class="session-dot" data-session="2"></span>
+            <span class="session-dot" data-session="3"></span>
+            <span class="session-dot" data-session="4"></span>
+          </div>
+          <p id="session-status">0 of 4 focus sessions completed.</p>
+        </div>
+
+        <div class="session-card">
+          <p class="eyebrow">Movement break</p>
+          <h2 id="break-suggestion">Stand up and roll your shoulders for 30 seconds.</h2>
+          <button class="button secondary compact" id="new-break" type="button">New Suggestion</button>
+        </div>
+
+        <div class="session-card">
+          <p class="eyebrow">Rewards</p>
+          <div class="badge-list" aria-label="Earned badges">
+            <span class="badge locked" data-badge="first">First Focus</span>
+            <span class="badge locked" data-badge="streak">Focus Streak</span>
+            <span class="badge locked" data-badge="reset">Break Boss</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-note">ADHD Student Helper</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

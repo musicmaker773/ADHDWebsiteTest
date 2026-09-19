@@ -1,0 +1,8 @@
+{
+  "name": "adhd-student-helper",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/breakdown.test.js"
+  }
+}

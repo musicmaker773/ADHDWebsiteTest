@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADHD Student Helper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <a class="brand spa-link" href="#home" data-route="home" aria-label="ADHD Student Helper home">
+      <span class="brand-mark">A</span>
+      <span>ADHD Student Helper</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="spa-link" href="#home" data-route="home">Home</a>
+      <a class="spa-link" href="#focus" data-route="focus">Smart Focus Timer</a>
+      <a class="spa-link" href="#breakdown" data-route="breakdown">Assignment Breakdown</a>
+      <a class="spa-link" href="#tracker" data-route="tracker">App Duration Tracker</a>
+      <a class="assignments-widget-trigger" href="#assignments-widget">Assignments</a>
+      <a class="spotify-widget-trigger" href="#spotify-widget">Study Playlist</a>
+    </nav>
+  </header>
+
+  <main class="spa-view" data-view="home">
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">Study support for ADHD brains</p>
+        <h1>Tools that help students start, focus, and follow through.</h1>
+        <p class="hero-copy">
+          Break down overwhelming assignments, stay focused during study sessions, and learn what
+          app usage patterns may be pulling time away from studying.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary spa-link" href="#focus" data-route="focus">Open Timer</a>
+          <a class="button secondary" href="#task-preview">Explore Tools</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="task-grid" id="task-preview" aria-label="ADHD student helper tools">
+      <article class="task-card">
+        <span class="task-number">01</span>
+        <h2>Smart Focus Timer</h2>
+        <p>Choose focus blocks, track study sessions, take movement breaks, and earn badges.</p>
+        <a class="button primary spa-link" href="#focus" data-route="focus">Open Timer</a>
+      </article>
+
+      <article class="task-card">
+        <span class="task-number">02</span>
+        <h2>Assignment Breakdown</h2>
+        <p>Type a large assignment and turn it into a checklist of smaller steps.</p>
+        <a class="button primary spa-link" href="#breakdown" data-route="breakdown">Break Down Work</a>
+      </article>
+
+      <article class="task-card">
+        <span class="task-number">03</span>
+        <h2>App Duration Tracker</h2>
+        <p>Log how long apps are used each day and see simple charts for weekly patterns.</p>
+        <a class="button primary spa-link" href="#tracker" data-route="tracker">Track App Time</a>
+      </article>
+
+    </section>
+  </main>
+
+  <main class="spa-view focus-shell" data-view="focus" hidden>
+    <section class="focus-intro">
+      <p class="eyebrow">Focus tool</p>
+      <h1>Smart Focus Timer</h1>
+      <p>
+        Choose a study length, name the task, build four focused sessions, and earn rewards as you go.
+      </p>
+    </section>
+
+    <section class="focus-layout" aria-label="Smart Focus Timer">
+      <article class="timer-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Current round</p>
+            <h2 id="mode-title">Focus Session</h2>
+          </div>
+          <span class="points-pill"><span id="points-count">0</span> pts</span>
+        </div>
+
+        <label class="field-label" for="task-name">What are you working on?</label>
+        <input id="task-name" class="task-input" type="text" value="Study for class" maxlength="48">
+
+        <div class="duration-group" aria-label="Choose focus length">
+          <button class="duration-button active" type="button" data-minutes="10">10 min</button>
+          <button class="duration-button" type="button" data-minutes="15">15 min</button>
+          <button class="duration-button" type="button" data-minutes="20">20 min</button>
+          <button class="duration-button" type="button" data-minutes="25">25 min</button>
+        </div>
+
+        <div class="timer-display" aria-live="polite">
+          <span id="time-left">10:00</span>
+          <small id="timer-context">Ready to focus on Study for class.</small>
+        </div>
+
+        <div class="progress-track" aria-label="Current session progress">
+          <span id="session-progress"></span>
+        </div>
+
+        <div class="timer-actions">
+          <button class="button primary" id="start-pause" type="button">Start</button>
+          <button class="button secondary" id="reset-timer" type="button">Reset</button>
+          <button class="button secondary" id="finish-session" type="button">Complete Session</button>
+        </div>
+      </article>
+
+      <aside class="support-panel">
+        <div class="session-card">
+          <p class="eyebrow">Goal</p>
+          <h2>Complete 4 sessions</h2>
+          <div class="session-meter" aria-label="Completed focus sessions">
+            <span class="session-dot" data-session="1"></span>
+            <span class="session-dot" data-session="2"></span>
+            <span class="session-dot" data-session="3"></span>
+            <span class="session-dot" data-session="4"></span>
+          </div>
+          <p id="session-status">0 of 4 focus sessions completed.</p>
+        </div>
+
+        <div class="session-card">
+          <p class="eyebrow">Movement break</p>
+          <h2 id="break-suggestion">Stand up and roll your shoulders for 30 seconds.</h2>
+          <button class="button secondary compact" id="new-break" type="button">New Suggestion</button>
+        </div>
+
+        <div class="session-card">
+          <p class="eyebrow">Rewards</p>
+          <div class="badge-list" aria-label="Earned badges">
+            <span class="badge locked" data-badge="first">First Focus</span>
+            <span class="badge locked" data-badge="streak">Focus Streak</span>
+            <span class="badge locked" data-badge="reset">Break Boss</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <main class="spa-view breakdown-shell" data-view="breakdown" hidden>
+    <section class="breakdown-intro">
+      <p class="eyebrow">Planning tool</p>
+      <h1>Assignment Breakdown</h1>
+      <p>
+        Turn one overwhelming assignment into a short checklist of clear, doable steps.
+      </p>
+    </section>
+
+    <section class="breakdown-layout" aria-label="Assignment Breakdown tool">
+      <article class="breakdown-panel">
+        <label class="field-label" for="assignment-input">What assignment feels too big?</label>
+        <textarea id="assignment-input" class="assignment-input" rows="4" maxlength="4000">Write a 5-page history paper.</textarea>
+
+        <div class="breakdown-actions">
+          <button class="button primary" id="breakdown-button" type="button">Break It Down</button>
+          <button class="button secondary" id="example-assignment" type="button">Use Example</button>
+          <button class="button secondary" id="clear-steps" type="button">Reset</button>
+        </div>
+
+        <p id="breakdown-request-status" role="status" aria-live="polite"></p>
+
+        <div class="next-step-panel" aria-live="polite">
+          <p class="eyebrow">Next tiny step</p>
+          <h2 id="next-step">Enter an assignment and break it down.</h2>
+        </div>
+      </article>
+
+      <article class="checklist-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Checklist</p>
+            <h2 id="assignment-title">Your smaller steps</h2>
+          </div>
+          <span class="points-pill"><span id="breakdown-count">0</span>%</span>
+        </div>
+
+        <div class="progress-track" aria-label="Assignment progress">
+          <span id="breakdown-progress"></span>
+        </div>
+
+        <p class="checklist-status" id="breakdown-status">No steps yet.</p>
+        <ul class="step-list" id="step-list"></ul>
+      </article>
+    </section>
+  </main>
+  <main class="spa-view tracker-shell" data-view="tracker" hidden>
+    <section class="tracker-intro">
+      <p class="eyebrow">Reflection tool</p>
+      <h1>App Duration Tracker</h1>
+      <p>
+        Log how long apps are used on each day, spot patterns, and notice where study time is going.
+      </p>
+    </section>
+
+    <section class="tracker-layout" aria-label="App Duration Tracker">
+      <article class="tracker-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Log app time</p>
+            <h2>Which app did you use?</h2>
+          </div>
+          <span class="points-pill"><span id="distraction-total">0</span> logs</span>
+        </div>
+
+        <div class="quick-distractions" aria-label="Common apps">
+          <button class="duration-button active" type="button" data-distraction="TikTok">TikTok</button>
+          <button class="duration-button" type="button" data-distraction="YouTube">YouTube</button>
+          <button class="duration-button" type="button" data-distraction="Instagram">Instagram</button>
+          <button class="duration-button" type="button" data-distraction="Discord">Discord</button>
+          <button class="duration-button" type="button" data-distraction="Games">Games</button>
+        </div>
+
+        <label class="field-label" for="custom-distraction">Custom app</label>
+        <input id="custom-distraction" class="task-input" type="text" placeholder="Type a different app">
+
+        <div class="tracker-fields">
+          <div>
+            <label class="field-label" for="distraction-day">Day</label>
+            <select id="distraction-day" class="tracker-select">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="distraction-time">Time of day</label>
+            <select id="distraction-time" class="tracker-select">
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="distraction-duration">Time used</label>
+            <select id="distraction-duration" class="tracker-select">
+              <option value="30">30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="90">1 hour 30 minutes</option>
+              <option value="120">2 hours</option>
+              <option value="150">2 hours 30 minutes</option>
+              <option value="180">3 hours</option>
+              <option value="210">3 hours 30 minutes</option>
+              <option value="240">4 hours</option>
+              <option value="270">4 hours 30 minutes</option>
+              <option value="300">5 hours</option>
+              <option value="330">5 hours 30 minutes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="breakdown-actions">
+          <button class="button primary" id="log-distraction" type="button">Log App Time</button>
+          <button class="button secondary" id="load-sample-distractions" type="button">Load Sample Week</button>
+          <button class="button secondary" id="clear-distractions" type="button">Reset</button>
+        </div>
+      </article>
+
+      <article class="insight-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Patterns</p>
+            <h2>App usage insights</h2>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <span id="top-distraction">None yet</span>
+            <small>Most used app</small>
+          </div>
+          <div class="insight-card">
+            <span id="best-focus-time">None yet</span>
+            <small>Busiest time of day</small>
+          </div>
+          <div class="insight-card">
+            <span id="trend-summary">No trend yet</span>
+            <small>Weekly trend</small>
+          </div>
+          <div class="insight-card">
+            <span id="total-distraction-time">0 minutes</span>
+            <small>Total app time</small>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="chart-grid" aria-label="App usage charts">
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 01</p>
+        <h2>Most used apps</h2>
+        <canvas id="distraction-chart" width="640" height="360"></canvas>
+      </article>
+
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 02</p>
+        <h2>Usage by time of day</h2>
+        <canvas id="focus-time-chart" width="640" height="360"></canvas>
+      </article>
+
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 03</p>
+        <h2>Weekly app time</h2>
+        <canvas id="weekly-trend-chart" width="640" height="360"></canvas>
+      </article>
+    </section>
+
+    <section class="log-panel" aria-label="Recent app usage logs">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Recent logs</p>
+          <h2>Recent app use</h2>
+        </div>
+      </div>
+      <ul class="distraction-log" id="distraction-log"></ul>
+    </section>
+  </main>
+
+
+  <footer class="site-footer">
+    <p id="footer-note">ADHD Student Helper</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

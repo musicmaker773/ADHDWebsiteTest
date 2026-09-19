@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Duration Tracker | ADHD Student Helper</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>window.location.replace('index.html#tracker');</script>
+</head>
+<body data-page="task-three">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="ADHD Student Helper home">
+      <span class="brand-mark">A</span>
+      <span>ADHD Student Helper</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="task-one.html">Smart Focus Timer</a>
+      <a href="task-two.html">Assignment Breakdown</a>
+      <a href="task-three.html">App Duration Tracker</a>
+      <a class="assignments-widget-trigger" href="#assignments-widget">Assignments</a>
+      <a class="spotify-widget-trigger" href="#spotify-widget">Study Playlist</a>
+    </nav>
+  </header>
+
+  <main class="tracker-shell">
+    <section class="tracker-intro">
+      <p class="eyebrow">Reflection tool</p>
+      <h1>App Duration Tracker</h1>
+      <p>
+        Log how long apps are used on each day, spot patterns, and notice where study time is going.
+      </p>
+    </section>
+
+    <section class="tracker-layout" aria-label="App Duration Tracker">
+      <article class="tracker-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Log app time</p>
+            <h2>Which app did you use?</h2>
+          </div>
+          <span class="points-pill"><span id="distraction-total">0</span> logs</span>
+        </div>
+
+        <div class="quick-distractions" aria-label="Common apps">
+          <button class="duration-button active" type="button" data-distraction="TikTok">TikTok</button>
+          <button class="duration-button" type="button" data-distraction="YouTube">YouTube</button>
+          <button class="duration-button" type="button" data-distraction="Instagram">Instagram</button>
+          <button class="duration-button" type="button" data-distraction="Discord">Discord</button>
+          <button class="duration-button" type="button" data-distraction="Games">Games</button>
+        </div>
+
+        <label class="field-label" for="custom-distraction">Custom app</label>
+        <input id="custom-distraction" class="task-input" type="text" placeholder="Type a different app">
+
+        <div class="tracker-fields">
+          <div>
+            <label class="field-label" for="distraction-day">Day</label>
+            <select id="distraction-day" class="tracker-select">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="distraction-time">Time of day</label>
+            <select id="distraction-time" class="tracker-select">
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="distraction-duration">Time used</label>
+            <select id="distraction-duration" class="tracker-select">
+              <option value="30">30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="90">1 hour 30 minutes</option>
+              <option value="120">2 hours</option>
+              <option value="150">2 hours 30 minutes</option>
+              <option value="180">3 hours</option>
+              <option value="210">3 hours 30 minutes</option>
+              <option value="240">4 hours</option>
+              <option value="270">4 hours 30 minutes</option>
+              <option value="300">5 hours</option>
+              <option value="330">5 hours 30 minutes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="breakdown-actions">
+          <button class="button primary" id="log-distraction" type="button">Log App Time</button>
+          <button class="button secondary" id="load-sample-distractions" type="button">Load Sample Week</button>
+          <button class="button secondary" id="clear-distractions" type="button">Reset</button>
+        </div>
+      </article>
+
+      <article class="insight-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Patterns</p>
+            <h2>App usage insights</h2>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <span id="top-distraction">None yet</span>
+            <small>Most used app</small>
+          </div>
+          <div class="insight-card">
+            <span id="best-focus-time">None yet</span>
+            <small>Busiest time of day</small>
+          </div>
+          <div class="insight-card">
+            <span id="trend-summary">No trend yet</span>
+            <small>Weekly trend</small>
+          </div>
+          <div class="insight-card">
+            <span id="total-distraction-time">0 minutes</span>
+            <small>Total app time</small>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="chart-grid" aria-label="App usage charts">
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 01</p>
+        <h2>Most used apps</h2>
+        <canvas id="distraction-chart" width="640" height="360"></canvas>
+      </article>
+
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 02</p>
+        <h2>Usage by time of day</h2>
+        <canvas id="focus-time-chart" width="640" height="360"></canvas>
+      </article>
+
+      <article class="chart-panel">
+        <p class="eyebrow">Chart 03</p>
+        <h2>Weekly app time</h2>
+        <canvas id="weekly-trend-chart" width="640" height="360"></canvas>
+      </article>
+    </section>
+
+    <section class="log-panel" aria-label="Recent app usage logs">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Recent logs</p>
+          <h2>Recent app use</h2>
+        </div>
+      </div>
+      <ul class="distraction-log" id="distraction-log"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-note">ADHD Student Helper</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
