@@ -139,7 +139,7 @@ function createServer({ apiKey = process.env.OPENAI_API_KEY, model = process.env
 
 if (require.main === module) {
   const port = process.env.PORT || 3000;
-  createServer().listen(port, '127.0.0.1', () => console.log(`Open http://localhost:${port}/#breakdown`));
+  createServer().listen(port, '0.0.0.0', () => console.log(`Open http://localhost:${port}/#breakdown`));
 }
 
 module.exports = { createServer, parseSteps, SYSTEM_PROMPT, breakdownError };
