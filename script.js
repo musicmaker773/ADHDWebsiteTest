@@ -389,6 +389,9 @@ if (assignmentTool) {
   const breakdownCount = document.querySelector('#breakdown-count');
   const nextStep = document.querySelector('#next-step');
 
+  const addStepForm = document.querySelector('#add-step-form');
+  const newStepInput = document.querySelector('#new-step');
+  let stepId = 0;
   let activeRequest = null;
   const requestStatus = document.querySelector('#breakdown-request-status');
   const setLoading = (loading) => {
@@ -396,6 +399,8 @@ if (assignmentTool) {
     exampleButton.disabled = loading;
     breakdownButton.textContent = loading ? 'Breaking it down…' : 'Break It Down';
     assignmentTool.setAttribute('aria-busy', String(loading));
+    stepList.querySelectorAll('button, textarea, input').forEach((control) => { control.disabled = loading; });
+    addStepForm.querySelectorAll('button, textarea').forEach((control) => { control.disabled = loading; });
   };
 
   const updateBreakdownProgress = () => {
@@ -422,15 +427,11 @@ if (assignmentTool) {
     });
   };
 
-  const renderSteps = (steps, assignment) => {
-    stepList.innerHTML = '';
-    assignmentTitle.textContent = assignment || 'Your smaller steps';
-
-    steps.forEach((step, index) => {
+  const appendStep = (step) => {
       const item = document.createElement('li');
       const checkbox = document.createElement('input');
       const label = document.createElement('label');
-      const checkboxId = `breakdown-step-${index}`;
+      const checkboxId = `breakdown-step-${stepId++}`;
 
       item.className = 'step-item';
       checkbox.type = 'checkbox';
@@ -440,12 +441,113 @@ if (assignmentTool) {
 
       checkbox.addEventListener('change', updateBreakdownProgress);
 
-      item.append(checkbox, label);
+      const actions = document.createElement('div');
+      actions.className = 'step-actions';
+      const editButton = document.createElement('button');
+      editButton.type = 'button';
+      editButton.className = 'button secondary';
+      editButton.textContent = 'Edit';
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'button secondary step-delete';
+      deleteButton.textContent = 'Delete';
+      const updateActionLabels = () => {
+        checkbox.setAttribute('aria-label', label.textContent);
+        editButton.setAttribute('aria-label', `Edit step: ${label.textContent}`);
+        deleteButton.setAttribute('aria-label', `Delete step: ${label.textContent}`);
+      };
+      updateActionLabels();
+      editButton.addEventListener('click', () => {
+        if (activeRequest) return;
+        const form = document.createElement('form');
+        form.className = 'step-editor';
+        const editorLabel = document.createElement('label');
+        editorLabel.textContent = 'Step details';
+        editorLabel.htmlFor = `${checkboxId}-editor`;
+        const editor = document.createElement('textarea');
+        editor.id = editorLabel.htmlFor;
+        editor.className = 'assignment-input';
+        editor.rows = 3;
+        editor.required = true;
+        editor.value = label.textContent;
+        const save = document.createElement('button');
+        save.className = 'button primary';
+        save.type = 'submit';
+        save.textContent = 'Save';
+        const cancel = document.createElement('button');
+        cancel.className = 'button secondary';
+        cancel.type = 'button';
+        cancel.textContent = 'Cancel';
+        const closeEditor = () => {
+          form.remove();
+          label.hidden = false;
+          actions.hidden = false;
+          editButton.focus();
+        };
+        cancel.addEventListener('click', closeEditor);
+        editor.addEventListener('input', () => editor.setCustomValidity(''));
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (activeRequest) return;
+          const text = editor.value.trim();
+          if (!text) {
+            editor.setCustomValidity('Enter a step before saving.');
+            editor.reportValidity();
+            return;
+          }
+          label.textContent = text;
+          updateActionLabels();
+          closeEditor();
+          updateBreakdownProgress();
+        });
+        editor.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') { event.preventDefault(); closeEditor(); }
+        });
+        const editorActions = document.createElement('div');
+        editorActions.className = 'step-actions';
+        editorActions.append(save, cancel);
+        form.append(editorLabel, editor, editorActions);
+        label.hidden = true;
+        actions.hidden = true;
+        item.append(form);
+        editor.focus();
+      });
+      deleteButton.addEventListener('click', () => {
+        if (activeRequest) return;
+        const neighbor = item.nextElementSibling || item.previousElementSibling;
+        item.remove();
+        updateBreakdownProgress();
+        requestStatus.textContent = 'Step deleted.';
+        (neighbor ? neighbor.querySelector('button') : newStepInput).focus();
+      });
+      actions.append(editButton, deleteButton);
+      item.append(checkbox, label, actions);
       stepList.append(item);
-    });
+  };
 
+  const renderSteps = (steps, assignment) => {
+    stepList.innerHTML = '';
+    assignmentTitle.textContent = assignment || 'Your smaller steps';
+    steps.forEach(appendStep);
     updateBreakdownProgress();
   };
+
+  newStepInput.addEventListener('input', () => newStepInput.setCustomValidity(''));
+  addStepForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (activeRequest) return;
+    const text = newStepInput.value.trim();
+    if (!text) {
+      newStepInput.setCustomValidity('Enter a step before adding it.');
+      newStepInput.reportValidity();
+      return;
+    }
+    appendStep(text);
+    updateBreakdownProgress();
+    newStepInput.value = '';
+    newStepInput.focus();
+    requestStatus.textContent = 'Step added.';
+  });
 
   const breakDownAssignment = async () => {
     if (activeRequest) return;
@@ -505,6 +607,8 @@ if (assignmentTool) {
     setLoading(false);
     requestStatus.textContent = '';
     assignmentInput.value = '';
+    newStepInput.value = '';
+    newStepInput.setCustomValidity('');
     renderSteps([], '');
   });
 

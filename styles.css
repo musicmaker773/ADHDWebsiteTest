@@ -1075,3 +1075,69 @@ h2 {
     padding: 22px;
   }
 }
+
+/* Checklist editing controls stay below the step text on narrow screens. */
+.step-item > label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 2;
+}
+
+.step-actions[hidden] {
+  display: none;
+}
+
+.step-actions .button {
+  padding: 8px 12px;
+  font-size: 0.875rem;
+}
+
+.button.secondary.step-delete {
+  background: transparent;
+  border-color: #743747;
+  color: #743747;
+}
+
+.button.secondary.step-delete:hover {
+  background: #743747;
+  border-color: #743747;
+  color: #fff;
+}
+
+.step-editor {
+  display: grid;
+  gap: 10px;
+  grid-column: 2;
+  min-width: 0;
+}
+
+.step-editor .step-actions {
+  grid-column: auto;
+}
+
+.step-item.complete .step-editor label {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.add-step-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.add-step-form .button {
+  justify-self: start;
+}
+
+.breakdown-layout button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
