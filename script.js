@@ -394,6 +394,12 @@ if (assignmentTool) {
   let stepId = 0;
   let activeRequest = null;
   const requestStatus = document.querySelector('#breakdown-request-status');
+  const updateMoveButtons = (loading = Boolean(activeRequest)) => {
+    [...stepList.children].forEach((item, index, items) => {
+      item.querySelector('.step-move-up').disabled = loading || index === 0;
+      item.querySelector('.step-move-down').disabled = loading || index === items.length - 1;
+    });
+  };
   const setLoading = (loading) => {
     breakdownButton.disabled = loading;
     exampleButton.disabled = loading;
@@ -401,9 +407,11 @@ if (assignmentTool) {
     assignmentTool.setAttribute('aria-busy', String(loading));
     stepList.querySelectorAll('button, textarea, input').forEach((control) => { control.disabled = loading; });
     addStepForm.querySelectorAll('button, textarea').forEach((control) => { control.disabled = loading; });
+    updateMoveButtons(loading);
   };
 
   const updateBreakdownProgress = () => {
+    updateMoveButtons();
     const checkboxes = stepList.querySelectorAll('input[type="checkbox"]');
     const completed = [...checkboxes].filter((checkbox) => checkbox.checked).length;
     const total = checkboxes.length;
@@ -451,8 +459,37 @@ if (assignmentTool) {
       deleteButton.type = 'button';
       deleteButton.className = 'button secondary step-delete';
       deleteButton.textContent = 'Delete';
+      const moveControls = document.createElement('div');
+      moveControls.className = 'step-move-controls';
+      const moveUp = document.createElement('button');
+      const moveDown = document.createElement('button');
+      moveUp.type = moveDown.type = 'button';
+      moveUp.className = 'button secondary step-move-up';
+      moveDown.className = 'button secondary step-move-down';
+      moveUp.textContent = '↑';
+      moveDown.textContent = '↓';
+      moveUp.title = 'Move step up';
+      moveDown.title = 'Move step down';
+      const moveStep = (direction) => {
+        if (activeRequest) return;
+        const neighbor = direction === 'up' ? item.previousElementSibling : item.nextElementSibling;
+        if (!neighbor) return;
+        if (direction === 'up') stepList.insertBefore(item, neighbor);
+        else stepList.insertBefore(neighbor, item);
+        updateBreakdownProgress();
+        const position = [...stepList.children].indexOf(item) + 1;
+        requestStatus.textContent = `Step moved to position ${position} of ${stepList.children.length}.`;
+        const movedButton = direction === 'up' ? moveUp : moveDown;
+        const otherButton = direction === 'up' ? moveDown : moveUp;
+        (movedButton.disabled ? otherButton : movedButton).focus();
+      };
+      moveUp.addEventListener('click', () => moveStep('up'));
+      moveDown.addEventListener('click', () => moveStep('down'));
+      moveControls.append(moveUp, moveDown);
       const updateActionLabels = () => {
         checkbox.setAttribute('aria-label', label.textContent);
+        moveUp.setAttribute('aria-label', `Move step up: ${label.textContent}`);
+        moveDown.setAttribute('aria-label', `Move step down: ${label.textContent}`);
         editButton.setAttribute('aria-label', `Edit step: ${label.textContent}`);
         deleteButton.setAttribute('aria-label', `Delete step: ${label.textContent}`);
       };
@@ -521,7 +558,7 @@ if (assignmentTool) {
         (neighbor ? neighbor.querySelector('button') : newStepInput).focus();
       });
       actions.append(editButton, deleteButton);
-      item.append(checkbox, label, actions);
+      item.append(checkbox, label, actions, moveControls);
       stepList.append(item);
   };
 
